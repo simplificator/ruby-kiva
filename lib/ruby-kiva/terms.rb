@@ -1,21 +1,13 @@
 module Kiva
   class Terms
     include DynamicInitializer
-    attr_accessor :disbursal_date, :scheduled_payments, :disbursal_amount, :local_payments, :loss_liability, :loan_amount, :disbursal_currency
 
+    attr_accessor :disbursal_amount, :loss_liability, :loan_amount, :disbursal_currency
 
-    def disbursal_date=(value)
-      @disbursal_date = Time.parse(value)
-    end
+    typed_attr_accessor :disbursal_date, Time, :parse
+    typed_attr_accessor :scheduled_payments, Kiva::Payment, :new, true
+    typed_attr_accessor :local_payments, Kiva::Payment, :new, true
 
-
-    def local_payments=(value)
-      @local_payments = (value && value.is_a?(Array)) ? value.map() {|item| Payment.new(item)} : value
-    end
-
-    def scheduled_payments=(value)
-      @scheduled_payments = (value && value.is_a?(Array)) ? value.map() {|item| Payment.new(item)} : value
-    end
   end
 end
 

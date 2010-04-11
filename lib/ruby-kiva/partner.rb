@@ -2,19 +2,10 @@ module Kiva
   class Partner
     include Api
     include DynamicInitializer
-    attr_accessor :start_date, :status, :name, :rating, :delinquency_rate, :id, :total_amount_raised, :default_rate, :loans_posted, :countries, :image
-
-    def start_date=(value)
-      @start_date = Time.parse(value)
-    end
-
-    def image=(value)
-      @image = Image.new(value)
-    end
-
-    def countries=(value)
-      @countries= value.map() {|item| Country.new(item)}
-    end
+    attr_accessor :status, :name, :rating, :delinquency_rate, :id, :total_amount_raised, :default_rate, :loans_posted
+    typed_attr_accessor :image, Kiva::Image
+    typed_attr_accessor :start_date, Time, :parse
+    typed_attr_accessor :countries, Kiva::Country, :new, true
 
     # Find a partner
     # either by :id or all of them

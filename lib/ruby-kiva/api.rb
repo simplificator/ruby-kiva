@@ -42,13 +42,7 @@ module Kiva
         Array(id).join(',').gsub(/\s/, '')
       end
 
-      def typed_attr_accessor(name, klass, factory_method = :new)
-        define_method("#{name}=") do |value|
-          typed = klass.send(factory_method, value)
-          instance_variable_set("@#{name}", typed)
-        end
-        attr_reader name
-      end
+
 
       def time_attr_accessor(*names)
         names.each do |name|

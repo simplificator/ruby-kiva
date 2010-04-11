@@ -3,35 +3,17 @@ module Kiva
     include Api
     include DynamicInitializer
 
-    attr_accessor :name, :activity, :location, :use, :borrower_count,
-                  :status, :posted_date, :id, :partner_id, :description,
-                  :loan_amount, :funded_amount, :paid_amount, :basket_amount, :sector, :image,
-                  :delinquent, :journal_totals, :borrowers, :terms, :funded_date, :video
+    attr_accessor :name, :activity, :use, :borrower_count,
+                  :status, :id, :partner_id, :description,
+                  :loan_amount, :funded_amount, :paid_amount, :basket_amount, :sector,
+                  :delinquent, :journal_totals, :terms, :funded_date
 
     typed_attr_accessor :location, Kiva::Location
     typed_attr_accessor :image, Kiva::Image
     typed_attr_accessor :video, Kiva::Video
     typed_attr_accessor :terms, Kiva::Terms
     typed_attr_accessor :posted_date, Date, :parse
-
-    #def location=(value)
-    #  @location =  Location.new(value)
-    #end
-
-    #def image=(value)
-    #  @image = Image.new(value)
-    #end
-
-    #def video=(value)
-    #  @video = Video.new(value)
-    #end
-    def borrowers=(value)
-      @borrowers = value.map() {|item| Borrower.new(item) }
-    end
-
-    #def terms=(value)
-    #  @terms = Terms.new(value)
-    #end
+    typed_attr_accessor :borrowers, Kiva::Borrower, :new, true
 
     # description consists of available languages and texts in different languages
     # texts are only available when doing a find by id
@@ -52,11 +34,6 @@ module Kiva
     def description_text(language)
       description_texts[language]
     end
-
-    #def posted_date=(value)
-    #  # 2009-01-09T09:50:08Z
-    #  @posted_date = Time.parse(value)
-    #end
 
     # Get the lenders for this loan
     # Caches the lenders, reload loan if you need to refresh the lenders

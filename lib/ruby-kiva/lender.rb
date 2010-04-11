@@ -3,21 +3,12 @@ module Kiva
     include Api
     include DynamicInitializer
     attr_accessor :loan_count, :occupation, :country_code, :name, :loan_because,
-                  :lender_id, :uid, :whereabouts, :image, :member_since, :invitee_count,
-                  :occupational_info, :personal_url, :team_join_date
+                  :lender_id, :uid, :whereabouts, :invitee_count,
+                  :occupational_info, :personal_url
 
-
-    def member_since=(value)
-      @member_since = Time.parse(value)
-    end
-
-    def team_join_date=(value)
-      @team_join_date = Time.parse(value)
-    end
-
-    def image=(value)
-      @image = Image.new(value)
-    end
+    typed_attr_accessor :member_since, Time, :parse
+    typed_attr_accessor :team_join_date, Time, :parse
+    typed_attr_accessor :image, Kiva::Image
 
     def lender_page_url
       "http://www.kiva.org/lender/#{self.lender_id}"
