@@ -4,9 +4,7 @@ module Kiva
     include Api
     attr_accessor :id, :body, :subject, :date, :author, :bulk, :comment_count, :recommendation_count
 
-    def data=(value)
-      @date = Time.parse(value)
-    end
+    typed_attr_accessor :date, Time, :parse
 
     def bulk?
       self.bulk

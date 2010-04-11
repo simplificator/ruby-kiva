@@ -3,12 +3,7 @@ module Kiva
     include DynamicInitializer
     include Api
     attr_accessor :id, :author, :whereabouts, :body, :date
-
-    def date=(value)
-      @date = Time.parse(value)
-    end
-
-
+    typed_attr_accessor :date, Time, :parse
 
     def self.find(params)
       if params[:journal_entry_id]

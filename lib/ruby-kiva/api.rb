@@ -41,28 +41,12 @@ module Kiva
       def sanitize_id_parameter(id)
         Array(id).join(',').gsub(/\s/, '')
       end
-
-
-
-      def time_attr_accessor(*names)
-        names.each do |name|
-          define_method("#{name}=") do |value|
-            instance_variable_set("@#{name}", Time.parse(value))
-          end
-          attr_reader(name)
-        end
-      end
-
     end
 
-    module InstanceMethods
-
-    end
 
     def self.included(receiver)
       receiver.instance_eval do
         extend ClassMethods
-        include InstanceMethods
         include HTTParty
         base_uri 'http://api.kivaws.org/v1'
       end

@@ -13,7 +13,7 @@ Api.app_id = 'we are creating a ruby wrapper, sorry for buggin your API all the 
 ### Loans
 ## finding Loans by ID
 
-puts Loan.find(:id => 180009)
+#puts Loan.find(:id => 180009).terms
 #puts Loan.find(:id => '180009, 180008').size
 #puts Loan.find(:id => [180009, '180008']).size
 

@@ -4,22 +4,16 @@ module Kiva
     include DynamicInitializer
 
     attr_accessor :date, :id, :lender, :loan, :sector, :basket_amount
+
+    typed_attr_accessor :date, Time, :parse
+    typed_attr_accessor :lender, Kiva::Lender
+    typed_attr_accessor :loan, Kiva::Loan
+
+
     def self.recent(options = {})
       json_to_paged_array(get('/lending_actions/recent.json'), 'lending_actions', true)
     end
 
-
-    def date=(value)
-      @date = Time.parse(value)
-    end
-
-    def lender=(value)
-      @lender = Lender.new(value)
-    end
-
-    def loan=(value)
-      @loan = Loan.new(value)
-    end
   end
 end
 

@@ -5,15 +5,9 @@ module Kiva
 
     attr_accessor :id, :shortname, :name, :category, :image, :whereabouts, :loan_because, :description,
                   :website_url, :membership_type, :member_count, :loan_count, :loaned_amount
-    #time_attr_accessor :team_since
-    typed_attr_accessor :team_since, Time, :parse
-    def image=(value)
-      @image = Image.new(value)
-    end
 
-    #def team_since=(value)
-    #  @team_since = Time.parse(value)
-    #end
+    typed_attr_accessor :team_since, Time, :parse
+    typed_attr_accessor :image, Kiva::Image
 
     def lenders(params = {})
       @lenders ||= Lender.find(params.merge({:team_id => self.id}))
@@ -21,6 +15,7 @@ module Kiva
     def loans(params = {})
       @loans ||= Loan.find(params.merge({:team_id => self.id}))
     end
+
     # find a team by :id or :shortname
     def self.find(params)
       if params[:id]

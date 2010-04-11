@@ -1,10 +1,8 @@
 module Kiva
   class Country
     include DynamicInitializer
-    attr_accessor :country_code, :name, :region, :iso_code, :location
+    attr_accessor :country_code, :name, :region, :iso_code
 
-    def location=(value)
-      @location = Location.new(value)
-    end
+    typed_attr_accessor :location, Kiva::Location
   end
 end
