@@ -96,7 +96,7 @@ module Kiva
     end
 
     def to_s()
-      "<Loan '%s' (%s) in %s with status %s, from %s>" % [self.name, self.id, self.location, self.status, self.borrowers]
+      "<Loan '%s' (%s) in %s with status %s, from %s>" % [self.name, self.id, self.location, self.id, self.borrowers]
     end
 
     private

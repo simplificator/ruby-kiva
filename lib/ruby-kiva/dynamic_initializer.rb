@@ -17,7 +17,11 @@ module Kiva
     module InstanceMethods
       def initialize(options = {})
         options.each do |key, value|
-          self.send("#{key}=", value)
+          if respond_to?("#{key}=")
+            self.send("#{key}=", value)
+          elsif !Api.friendly
+            raise "Attribute #{key} is not yet supported. Set Api.friendly = true"
+          end
         end
       end
     end

@@ -7,12 +7,18 @@ See build.kiva.org for details.
 == Status
 
 Still work in progress, some tests are missing, documentation is quite weak.
-All features (Loans, Lenders, Comments, ....) from kiva.org API are reflected.
+Most API calls from Kiva are reflected.
+http://build.kiva.org/api offers a list of API methods, not implemented: Methods, Release, Templates
 
-== TODO
+== Attention
 
-* Verify List Items limit (ids in queries)
-* Verify params?
+Whenever the unknown elements are encountered in the JSON documents, then an exception is raised.
+Let me know if this happens and i will add the missing attributes. Or set Kiva::Api.friendly = true AND let me know.
+
+
+== History
+0.2.0 Updated API to include more functionality, added some tests
+0.1.0 Initial Release
 
 == Howto
 
