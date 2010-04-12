@@ -5,11 +5,11 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "simplificator-ruby-kiva"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
-    gem.email = "pascal.betz@simplificator.com"
-    gem.homepage = "http://github.com/pascalbetz/simplificator-ruby-kiva"
-    gem.authors = ["pascalbetz"]
+    gem.summary = %Q{a ruby wrapper for the kiva.org api}
+    gem.description = %Q{a ruby wrapper for the kiva.org api}
+    gem.email = "info@simplificator.com"
+    gem.homepage = "http://github.com/simplificator/simplificator-ruby-kiva"
+    gem.authors = ["simplificator"]
     gem.add_development_dependency "shoulda", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
