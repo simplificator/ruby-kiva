@@ -9,8 +9,9 @@ module Kiva
 
     # Find a partner
     # either by :id or all of them
-    # Since kiva does not offer pagination or search,
+    # Since kiva does not offer search,
     # finding by id is implemented in memory/ruby.
+    # Pagination is not supported, page size is 200 and currently there are 143 partners
     # Items are cached but can be reloaded by passing :reload => true (caching is suggested by kiva...)
     def self.find(params = {})
       if params[:id]

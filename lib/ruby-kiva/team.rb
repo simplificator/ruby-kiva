@@ -1,5 +1,6 @@
 module Kiva
   class Team
+
     include DynamicInitializer
     include Api
 
@@ -19,10 +20,31 @@ module Kiva
     # find a team by :id or :shortname
     def self.find(params)
       if params[:id]
-        json_to_paged_array(get("/teams/#{params[:id]}.json", :query => base_options(params)), 'teams', false)
+        data = get("/teams/#{sanitize_id_parameter(params[:id])}.json", :query => sanitize_options(params))
+        many = sanitize_id_parameter(params[:id]).include?(',')
       elsif params[:shortname]
-        json_to_paged_array(get("/teams/using_shortname/#{params[:shortname]}.json", :query => base_options(params)), 'teams', false)
+        data = get("/teams/using_shortname/#{sanitize_id_parameter(params[:shortname])}.json", :query => sanitize_options(params))
+        many = sanitize_id_parameter(params[:shortnames]).include?(',')
+      else
+        data = get("/teams/search.json", :query => sanitize_options(params))
+        many = true
       end
+      json_to_paged_array(data, 'teams', many)
     end
+
+    private
+
+    OPTION_MAPPINGS = [
+      [:sort_by, :sort_by, false, ['oldest', 'newest']],
+      [:occupation],
+      [:query, :q],
+      [:country_code],
+      [:membership_type, :membership_type, false, ['open', 'closed']],
+      [:category, :category, false, ['Alumni Groups', 'Businesses', 'Businesses - Internal Groups', 'Clubs', 'Colleges/Universities', 'Common Interest', 'Events', 'Families', 'Field Partner Fans', 'Friends', 'Local Area', 'Memorials', 'Religious Congregations', 'Schools', 'Sports Groups', 'Youth Groups', 'Other']],
+    ]
+    def self.sanitize_options(options = {})
+      base_options(options).merge(map_options(options, OPTION_MAPPINGS))
+    end
+
   end
 end

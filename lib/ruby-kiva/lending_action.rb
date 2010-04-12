@@ -10,8 +10,12 @@ module Kiva
     typed_attr_accessor :loan, Kiva::Loan
 
 
-    def self.recent(options = {})
+    def self.newest(options = {})
       json_to_paged_array(get('/lending_actions/recent.json'), 'lending_actions', true)
+    end
+    # renamed from recent to 'newest' to make it consistent with LendingAction and Lender
+    class <<self
+      alias_method :recent, :newest
     end
 
   end

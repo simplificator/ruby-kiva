@@ -9,6 +9,11 @@ See build.kiva.org for details.
 Still work in progress, some tests are missing, documentation is quite weak.
 All features (Loans, Lenders, Comments, ....) from kiva.org API are reflected.
 
+== TODO
+
+* Verify List Items limit (ids in queries)
+* Verify params?
+
 == Howto
 
 include Kiva

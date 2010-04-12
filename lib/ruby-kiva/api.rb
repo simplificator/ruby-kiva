@@ -10,6 +10,18 @@ module Kiva
 
     module ClassMethods
       private
+      def map_options(options, mappings)
+        result = {}
+        mappings.each do |mapping|
+          if options.has_key?(mapping[0])
+            value = options[mapping[0]]
+            raise "Invalid value for #{mapping[0]}: #{value}" if mapping[3] && !mapping[3].include?(value)
+            result[mapping[1] || mapping[0]] = mapping[2] ? sanitize_id_parameter(value) : value
+          end
+        end
+        result
+      end
+
       def json_to_paged_array(data, data_key, many)
         if many
           if data[data_key]
@@ -35,7 +47,7 @@ module Kiva
       end
 
       def pagination_options(options = {})
-        { :page => options[:page] || 1}
+        options[:page] ? {:page => options[:page]} : {}
       end
 
       def sanitize_id_parameter(id)

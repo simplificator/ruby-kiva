@@ -13,7 +13,9 @@ module Kiva
     typed_attr_accessor :video, Kiva::Video
     typed_attr_accessor :terms, Kiva::Terms
     typed_attr_accessor :posted_date, Date, :parse
+    typed_attr_accessor :paid_date, Date, :parse
     typed_attr_accessor :borrowers, Kiva::Borrower, :new, true
+    typed_attr_accessor :payments, Kiva::Payment, :new, true
 
     # description consists of available languages and texts in different languages
     # texts are only available when doing a find by id
@@ -46,10 +48,14 @@ module Kiva
       @journal_entries ||= JournalEntry.find(params.merge({:loan_id => self.id}))
     end
 
+    def loan_updates
+      @loan_updates ||= find_loan_updates()
+    end
+
 
     # Supported options:
     # * :page: The requested page number
-    def self.recent(options = {})
+    def self.newest(options = {})
       data = get('/loans/newest.json', :query => base_options(options))
       json_to_paged_array(data, 'loans', true)
     end
@@ -73,16 +79,17 @@ module Kiva
     # When searching for multiple Loans, then the :page parameter is supported to specify the desired page.
     def self.find(params)
       if params[:id] # find one or many by ID
-        data = get("/loans/#{sanitize_id_parameter(params[:id])}.json", :query => base_options(params))
+        data = get("/loans/#{sanitize_id_parameter(params[:id])}.json", :query => sanitize_options(params))
         many = sanitize_id_parameter(params[:id]).include?(',')
       elsif params[:lender_id] # find all loans for a lender
-        data = get("/lenders/#{params[:lender_id]}/loans.json", :query => base_options(params))
+        data = get("/lenders/#{params[:lender_id]}/loans.json", :query => sanitize_options(params))
         many = true
       elsif params[:team_id] # find all loans for a team
-        data = get("/teams/#{params[:team_id]}/loans.json", :query => base_options(params))
+        data = get("/teams/#{params[:team_id]}/loans.json", :query => sanitize_options(params))
         many = true
       else # search
-        data = get('/loans/search.json', :query => base_options(params).merge(find_options(params)))
+        puts "Searching with #{base_options(params).merge(find_options(params)).inspect}"
+        data = get('/loans/search.json', :query => sanitize_options(params))
         many = true
       end
       json_to_paged_array(data, 'loans', many)
@@ -94,14 +101,30 @@ module Kiva
 
     private
 
-    def self.find_options(options = {})
-      result = {}
-      if options[:partner_id]
-        result[:partner] = sanitize_id_parameter(options[:partner_id])
+    def find_loan_updates
+      data = Loan.get("/loans/#{self.id}/updates.json")
+      data['loan_updates'].map do |entry|
+        type = entry.delete('update_type')
+        case type
+        when 'journal_entry' then JournalEntry.new(entry['journal_entry'])
+        when 'payment' then Payment.new(entry['payment'])
+        else raise "unknown type #{type}"
+        end
       end
-      result[:status] = options[:status] if options[:status]
-      result[:q] = options[:query] if options[:query]
-      result
+    end
+
+    OPTION_MAPPINGS = [
+      [:partner_id, :partner, true],
+      [:sort_by, :sort_by, false, ['oldest', 'newest']],
+      [:status, :status, false, ['fundraising', 'funded', 'in_repayment', 'paid', 'defaulted']],
+      [:query, :q],
+      [:gender, :gender, false, ['male', 'female']],
+      [:region, :region, false, ['na', 'ca', 'sa', 'af', 'as', 'me', 'ee']],
+      [:sector],
+      [:country_code],
+    ]
+    def self.sanitize_options(options = {})
+      base_options(options).merge(map_options(options, OPTION_MAPPINGS))
     end
 
 

@@ -24,30 +24,48 @@ module Kiva
       "<Lender #{self.lender_id}>"
     end
 
+    def self.newest(params = {})
+      json_to_paged_array(get('/lenders/newest.json', :query => sanitize_options(params)), 'lenders', true)
+    end
+
     # Find Lenders
     # __either__
     # :id : A single ID or a comma Separated String of IDs or an Array of IDs
     # __or__
     # :loan_id : A single loan ID
     # __or__
-    # :team_id : a single team ID
+    # :team_id : a single team ID, supports :sort_by
     #
     # If searching for a single ID, then this method can return nil (no item with this ID found).
     # Otherwise this method will always return a PagedArray instance (which might be empty though)
     # If querying for multiple items, then :page is supported
-    def self.find(params)
+    def self.find(params = {})
       if params[:id] # find one or many by lender ID
-        data = get("/lenders/#{sanitize_id_parameter(params[:id])}.json", :query => base_options(params))
+        data = get("/lenders/#{sanitize_id_parameter(params[:id])}.json", :query => sanitize_options(params))
         many = sanitize_id_parameter(params[:id]).include?(',')
       elsif params[:loan_id] # find lenders for a loan
-        data = get("/loans/#{params[:loan_id]}/lenders.json", :query => base_options(params))
+        data = get("/loans/#{params[:loan_id]}/lenders.json", :query => sanitize_options(params))
         many = true
       elsif params[:team_id]
-        data = get("/teams/#{params[:team_id]}/lenders.json", :query => base_options(params))
+        data = get("/teams/#{params[:team_id]}/lenders.json", :query => sanitize_options(params))
+        many = true
+      else
+        data = get("/lenders/search.json", :query => sanitize_options(params))
         many = true
       end
       json_to_paged_array(data, 'lenders', many)
     end
+
+    private
+    OPTION_MAPPINGS = [
+      [:sort_by, :sort_by, false, ['oldest', 'newest']],
+      [:occupation],
+      [:query, :q]
+      ]
+    def self.sanitize_options(options = {})
+      base_options(options).merge(map_options(options, OPTION_MAPPINGS))
+    end
+
   end
 end
 

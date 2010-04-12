@@ -1,7 +1,5 @@
 module Kiva
   class JournalEntry
-    MEDIA_TYPES = ['any', 'video', 'image']
-    SORT_BY = ['newest', 'oldest', 'recommendation_count', 'comment_count']
     include DynamicInitializer
     include Api
     attr_accessor :id, :body, :subject, :author, :bulk, :comment_count, :recommendation_count
@@ -17,10 +15,10 @@ module Kiva
     def self.find(params)
       if params[:loan_id]
         json_to_paged_array(get("/loans/#{params[:loan_id]}/journal_entries.json",
-          :query => base_options.merge(find_options(params))), 'journal_entries', true)
+          :query => sanitize_options(params)), 'journal_entries', true)
       else
         json_to_paged_array(get("/journal_entries/search.json",
-          :query => base_options.merge(find_options(params))), 'journal_entries', true)
+          :query => sanitize_options(params)), 'journal_entries', true)
       end
     end
 
@@ -30,21 +28,17 @@ module Kiva
 
     private
 
-    def self.find_options(options)
-      result = {}
+    OPTION_MAPPINGS = [
+      [:media, :media, false, ['any', 'video', 'image']],
+      [:sort_by, :sort_by, false, ['newest', 'oldest', 'recommendation_count', 'comment_count']],
+      [:partner_id, :partner, true],
+      [:query, :q]
+      ]
+    def self.sanitize_options(options = {})
+      result = base_options(options).merge(map_options(options, OPTION_MAPPINGS))
       result['include_bulk'] = options[:include_bulk] ? 1 : 0
-      if options[:media]
-        raise "Unknown media type #{options[:media]}" unless MEDIA_TYPES.include?(options[:media].to_s)
-        result[:media] = options[:media]
-      end
-      if options[:sort_by]
-        raise "Unknown sort_by #{options[:sort_by]}" unless SORT_BY.include?(options[:sort_by].to_s)
-        result[:sort_by] = options[:sort_by]
-      end
-      result[:partner] = sanitize_id_parameter(options[:partner_id]) if options[:partner_id]
-      result[:q] = options[:query] if options[:query]
-
       result
     end
+
   end
 end
