@@ -8,10 +8,10 @@ Gem::Specification.new do |s|
   s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["pascalbetz"]
+  s.authors = ["simplificator"]
   s.date = %q{2010-04-12}
-  s.description = %q{TODO: longer description of your gem}
-  s.email = %q{pascal.betz@simplificator.com}
+  s.description = %q{a ruby wrapper for the kiva.org api}
+  s.email = %q{info@simplificator.com}
   s.extra_rdoc_files = [
     "LICENSE",
      "README.rdoc"
@@ -41,6 +41,7 @@ Gem::Specification.new do |s|
      "lib/ruby-kiva/terms.rb",
      "lib/ruby-kiva/video.rb",
      "lib/simplificator-ruby-kiva.rb",
+     "simplificator-ruby-kiva.gemspec",
      "test/helper.rb",
      "test/test_simplificator-ruby-kiva.rb",
      "test/unit/borrower_test.rb",
@@ -51,11 +52,11 @@ Gem::Specification.new do |s|
      "test/unit/lender_test.rb",
      "test/unit/payment_test.rb"
   ]
-  s.homepage = %q{http://github.com/pascalbetz/simplificator-ruby-kiva}
+  s.homepage = %q{http://github.com/simplificator/simplificator-ruby-kiva}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}
-  s.summary = %q{TODO: one-line summary of your gem}
+  s.summary = %q{a ruby wrapper for the kiva.org api}
   s.test_files = [
     "test/helper.rb",
      "test/test_simplificator-ruby-kiva.rb",

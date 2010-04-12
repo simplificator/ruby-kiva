@@ -4,7 +4,7 @@ module Kiva
       @@app_id = value
     end
     def self.app_id
-      @@app_id
+      @@app_id if defined? @@app_id
     end
 
 

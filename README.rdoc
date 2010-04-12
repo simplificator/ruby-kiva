@@ -4,7 +4,12 @@
 This is a ruby wrapper for the kiva.org api.
 See build.kiva.org for details.
 
-== Howtow
+== Status
+
+Still work in progress, some tests are missing, documentation is quite weak.
+All features (Loans, Lenders, Comments, ....) from kiva.org API are reflected.
+
+== Howto
 
 include Kiva
 

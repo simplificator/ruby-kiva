@@ -5,3 +5,7 @@ require 'httparty'
    lender partner lending_action journal_entry comment team).each do |name|
   require File.join(File.dirname(__FILE__), 'ruby-kiva', name)
 end
+
+
+#include Kiva
+#puts JournalEntry.find(:query => 'Food', :partner_id => [78, 100]).inspect
