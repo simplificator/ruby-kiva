@@ -2,7 +2,7 @@ module Kiva
   class JournalEntry
     include DynamicInitializer
     include Api
-    attr_accessor :id, :body, :subject, :date, :author, :bulk, :comment_count, :recommendation_count
+    attr_accessor :id, :body, :subject, :author, :bulk, :comment_count, :recommendation_count
 
     typed_attr_accessor :date, Time, :parse
 
