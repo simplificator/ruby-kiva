@@ -1,9 +1,51 @@
 = simplificator-ruby-kiva
 
-Description goes here.
+== What
+This is a ruby wrapper for the kiva.org api.
+See build.kiva.org for details.
+
+== Howtow
+
+include Kiva
+
+Api.app_id = 'your api id here, not required but recommended, see build.kiva.org'
+### Loans
+## finding Loans by ID
+
+#puts Loan.find(:id => 180009).terms
+#puts Loan.find(:id => '180009, 180008').size
+#puts Loan.find(:id => [180009, '180008']).size
+
+## finding Loans by lender_id
+#puts Loan.find(:lender_id => 'matt', :page => 1).inspect
+
+## finding Loans
+#puts Loan.find(:query => 'Chinchilla', :page => 1).inspect
+#puts Loan.find(:partner_id => [150, 156, 188, 190, 120], :query => 'Vegetable', :status => :in_repayment, :page => 2).inspect
+
+### Partners
+
+#puts Partner.find().first.inspect
+#puts Partner.find(:id => 1).inspect
+
+
+### Lending Actions
+#LendingAction.recent.first
+
+
+### Journal Entries
+#puts JournalEntry.find(:loan_id => 180009, :include_bulk => true, :page => 10).inspect
+#puts Loan.find(:id => 180009).journal_entries(:include_bulk => true).first.comments
+#puts Comment.find(:journal_entry_id => 28342).inspect
+
+
+### Team
+#puts Team.find(:id => 2).team_since
+#puts Team.find(:shortname => 'buildkiva')
+#puts Team.find(:id => 6341).lenders(:page => 1).inspect
 
 == Note on Patches/Pull Requests
- 
+
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a

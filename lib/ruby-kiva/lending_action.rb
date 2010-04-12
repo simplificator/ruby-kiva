@@ -3,7 +3,7 @@ module Kiva
     include Api
     include DynamicInitializer
 
-    attr_accessor :date, :id, :lender, :loan, :sector, :basket_amount
+    attr_accessor :id, :sector, :basket_amount
 
     typed_attr_accessor :date, Time, :parse
     typed_attr_accessor :lender, Kiva::Lender

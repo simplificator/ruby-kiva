@@ -53,8 +53,14 @@ module Kiva
     end
 
     private
+
+
     def pagination_info
-      "Page #{self.current_page} of #{self.total_pages} (entries #{self.from_entry} - #{self.to_entry} of #{self.total_entries}). Previous? #{self.previous_page?}, Next? #{self.next_page?}"
+      if out_of_bounds?
+        "<Page is out of bounds>"
+      else
+        "<Page #{self.current_page} of #{self.total_pages} (entries #{self.from_entry} - #{self.to_entry} of #{self.total_entries}). Previous? #{self.previous_page?}, Next? #{self.next_page?}>"
+      end
     end
   end
 end
